@@ -4,9 +4,9 @@ fetch("http://localhost:3000/api/products") // fetch fonction de chrome pour rec
 
 function addProducts(kanaps) { // recuperation des donnees des elements en créant une balise "a" constituer d'un article, une image, un h3 et un p
 
-    kanaps.forEach((kanap) => { // .............. 
+    kanaps.forEach((kanap) => { // pour chaque element reiteration de la fonction  
 
-        const {_id, imageUrl, altTxt, name, description } = kanap 
+        const {_id, imageUrl, altTxt, name, description } = kanap // recuperation de l'object pour chaque element 
         const anchor = makeAnchor(_id)
         const article = document.createElement("article") // creation de la balise "article"
         const image = makeImage(imageUrl, altTxt)
