@@ -1,15 +1,15 @@
-const queryString = window.location.search; // va nous permettre de prendre des informations par rapport à l'emplacement d'un document, Une DOMString contenant un '?' suivi des paramètres de l'URL.
-const urlParams = new URLSearchParams(queryString);
-const productId = urlParams.get("id"); // La get()méthode de l' URLSearchParams interface renvoie la première valeur associée au paramètre de recherche donné donc l'id de l'api.
-if (productId != null) {
+const queryString = window.location.search // va nous permettre de prendre des informations par rapport à l'emplacement d'un document, Une DOMString contenant un '?' suivi des paramètres de l'URL.
+const urlParams = new URLSearchParams(queryString)
+const id = urlParams.get("id") // La get()méthode de l' URLSearchParams interface renvoie la première valeur associée au paramètre de recherche donné donc l'id de l'api.
+if (id != null) {
   // si l'id n'est pas null
-  let itemPrice = 0;
-  let imgUrl, altText, productName;
+  let itemPrice = 0
+  let imgUrl, altText, productName
 }
 
-fetch(`http://localhost:3000/api/products/${productId}`) // fetch fonction de chrome pour recuperer les données de l'api
+fetch(`http://localhost:3000/api/products/${id}`) // fetch fonction de chrome pour recuperer les données de l'api
   .then((response) => response.json())
-  .then((res) => handleData(res)); // recherche de la fonction handleData
+  .then((res) => handleData(res)) // recherche de la fonction handleData
 
 function handleData(kanap) {
   // recuperation de l'object
@@ -75,28 +75,75 @@ if (button != null) {
 
 function handleClick() {
   // récuperation des valeurs de couleur et de la quantité
-  const color = document.querySelector("#colors").value; // recherche de la valeur de la couleur
-  const quantity = document.querySelector("#quantity").value; // recherche de la valeur de la quantité
-  if (itemOrderInvalid(color, quantity)) return;
-  saveOrder(color, quantity);
-  alert("your product has been successfully added"); // alert pour confirmation d'ajout au panier
+  const color = document.querySelector("#colors").value // recherche de la valeur de la couleur
+  const quantity = document.querySelector("#quantity").value // recherche de la valeur de la quantité
+  if (itemOrderInvalid(color, quantity)) return
+  saveOrder(color, quantity)
 }
 
 function saveOrder(color, quantity) {
   // sauvegarde des order dans le localStorage
-  const data = {
-    id: productId, // id egale à productId
+  const product = {
+    id: id, // id egale à id
     name: productName, // name egale à name
     color: color, // color egale à color
     quantity: Number(quantity), // quantity egale à quantity ( en number et non en string )
     price: itemPrice, // price egale à itemPrice
     imageUrl: imgUrl, // imageUrl egale à imgUrl
     altTxt: altText, // altTxt egale à altText
+   
   }
 
-  //const itemPanier = localStorage.getItem("article");
-  localStorage.setItem("article", JSON.stringify(data)); // transformera l'object en string
+  addCart(product, quantity) // appel de la fonction
 }
+
+function saveCart(basket) { //sauvegarde dans le du panier dans le localstorage
+  localStorage.setItem("basket", JSON.stringify(basket)); // stringify pour transformer l'objet en chaine de caractere
+}
+
+function getCart() { // recuperation du panier dans le localstorage
+  let basket = localStorage.getItem("basket");
+  if(basket == null) { // si basket est null alors retourne un tableau vide
+    return []
+  }else{
+    return JSON.parse(basket) // parse pour transformer l'objet en chaine de caractere 
+  }
+}
+
+function addCart(product, quantity){ //ajout de produit au panier du local storage sinon modification de la quantité du produit
+  let basket = getCart();
+  
+  let foundProduct = basket.find(p => p.id == product.id && p.color == product.color) // find va chercher un element sur le tableau par rapport à la condition 
+  if (foundProduct != undefined) {
+  foundProduct.quantity += Number(quantity)
+  alert("the quantity of your product has been modified")
+  }else {
+    product.quantity = Number(quantity);
+    basket.push(product);
+    alert("your product has been successfully added"); // alert pour confirmation d'ajout au panier
+  }
+  saveCart(basket);
+}
+
+/*function removeFromCart(product) {
+  let basket = getCart();
+  basket = basket.filter(p => p.id != product.id && p.color == product.color);
+  saveCart(basket)
+}
+
+function changeQuantity(product) {
+  let basket = getCart();
+  let foundProduct = basket.find(p => p.id == product.id && p.color == product.color)
+  if (foundProduct != undefined) {
+    foundProduct.quantity += quantity
+    if(foundProduct.quantity <= 0){
+      removeFromCart(foundProduct)
+    } else {
+      saveCart(basket)
+    }
+  }
+}*/
+
 
 function itemOrderInvalid(color, quantity) {
   // message d'alert si la couleur est nul ou egale à la string par defaut "", si la quantité est nul ou egale à 0
@@ -104,7 +151,7 @@ function itemOrderInvalid(color, quantity) {
     alert("Please select a color and quantity");
     return true;
   }
-  if (quantity > 100) { // message d'alert si quantité est superieur à 100
+  if (quantity > 100 || quantity < 0) { // message d'alert si quantité est superieur à 100
     alert("select a quantity between 1 and 100");
     return true;
   }
