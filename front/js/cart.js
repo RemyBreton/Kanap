@@ -73,17 +73,21 @@ const settings = document.createElement("div")
 settings.classList.add("cart__item__content__settings")
 
 addQuantityToSettings(settings, valeur)
-addDeleteToSettings(settings);
+addDeleteToSettings(settings, valeur);
 return settings
 }
 
-function addDeleteToSettings(settings) {
+function addDeleteToSettings(settings, valeur) {
   const div = document.createElement("div"); 
   div.classList.add("cart__item__content__settings__delete"); 
+  
   const p = document.createElement("p");
+  p.classList.add("deleteItem")
   p.textContent = "Supprimer";
+  p.addEventListener("click", () => removeFromCart(valeur))
   div.appendChild(p);
-  settings.appendChild(div); 
+  settings.appendChild(div);  
+  
 }
 
 function addQuantityToSettings(settings, valeur) {
@@ -106,37 +110,36 @@ function addQuantityToSettings(settings, valeur) {
   quantity.appendChild(input)
   settings.appendChild(quantity)
 }
+
 //-------------------------------------------------
 
-
-/*function saveCart(basket) { //sauvegarde dans le du panier dans le localstorage
-  localStorage.setItem("basket", JSON.stringify(basket)); // stringify pour transformer l'objet en chaine de caractere
-}*/
-
-/*function getCart() { // recuperation du panier dans le localstorage
-  let basket = localStorage.getItem("basket");
-  if(basket == null) { // si basket est null alors retourne un tableau vide
-    return []
-  }else{
-    return JSON.parse(basket) // parse pour transformer l'objet en chaine de caractere 
-
-  }
-}*/
-function removeFromCart(input, valeur) {
- // let basket = getCart();
+function removeFromCart(valeur) {
   let produitInLc = JSON.parse(localStorage.getItem("basket"));
-  basket = produitInLc.filter(p => p.id != valeur.id && p.color == valeur.color);
-  localStorage.setItem("basket", JSON.stringify(produitInLc)); // stringify pour transformer l'objet en chaine de caractere
+  let ValidationDelete = confirm("Etes vous sur de vouloir supprimer le produit de votre panier ?")
+  if(ValidationDelete === true) {
+  produitInLc = produitInLc.filter(p => p.id !== valeur.id && p.color !== valeur.color || p.id == valeur.id && p.color != valeur.color)
+  localStorage.setItem("basket", JSON.stringify(produitInLc)); 
+  displayTotalPrice()
+  displayTotalQuantity()
+  deleteArticleFromPAge(valeur)
+  alert("Votre panier à bien été modifié")
+} else {
+  alert("Votre panier est inchangé")
+}
+}
+
+function deleteArticleFromPAge(valeur) {
+  const articleToDelete = document.querySelector(`article[data-id="${valeur.id}"][data-color="${valeur.color}"]`)
+  articleToDelete.remove()
 }
 
 function changeQuantity(input, valeur) {
-  // let basket = getCart();
   let produitInLc = JSON.parse(localStorage.getItem("basket"));
   let foundProduct = produitInLc.find(p => p.id == valeur.id && p.color == valeur.color)
   if (foundProduct != undefined) {
     foundProduct.quantity = Number(input.value)
     if(foundProduct.quantity <= 0){
-      removeFromCart(foundProduct)
+      removeFromCart(valeur)
     } else {
       localStorage.setItem("basket", JSON.stringify(produitInLc)); // stringify pour transformer l'objet en chaine de caractere
     }
