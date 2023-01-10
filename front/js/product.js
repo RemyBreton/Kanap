@@ -125,26 +125,6 @@ function addCart(product, quantity){ //ajout de produit au panier du local stora
   saveCart(basket);
 }
 
-/*function removeFromCart(product) {
-  let basket = getCart();
-  basket = basket.filter(p => p.id != product.id && p.color == product.color);
-  saveCart(basket)
-}
-
-function changeQuantity(product) {
-  let basket = getCart();
-  let foundProduct = basket.find(p => p.id == product.id && p.color == product.color)
-  if (foundProduct != undefined) {
-    foundProduct.quantity += quantity
-    if(foundProduct.quantity <= 0){
-      removeFromCart(foundProduct)
-    } else {
-      saveCart(basket)
-    }
-  }
-}*/
-
-
 function itemOrderInvalid(color, quantity) {
   // message d'alert si la couleur est nul ou egale à la string par defaut "", si la quantité est nul ou egale à 0
   if (color == null || color === "" || quantity == null || quantity == 0) {
