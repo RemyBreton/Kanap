@@ -261,8 +261,6 @@ function submitForm(e) {
         const orderId = dataUser.orderId;
         window.location.href = "./confirmation.html" + "?orderId=" + orderId;
       })
-
-      .catch((err) => console.log(err));
   }
 }
 //-------------------------------------ERREUR DE FORMULAIRE-------------------------------------------
