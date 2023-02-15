@@ -1,5 +1,5 @@
 const queryString = window.location.search; // va nous permettre de prendre des informations par rapport à l'emplacement d'un document, Une DOMString contenant un '?' suivi des paramètres de l'URL.
-const urlParams = new URLSearchParams(queryString);
+const urlParams = new URLSearchParams(queryString); // définit des méthodes utilitaires pour travailler avec la chaîne de requête
 const id = urlParams.get("id"); // La get()méthode de l' URLSearchParams interface renvoie la première valeur associée au paramètre de recherche donné donc l'id de l'api.
 if (id != null) {
   // si l'id n'est pas null
@@ -7,9 +7,17 @@ if (id != null) {
   let imgUrl, altText, productName;
 }
 
+/***************************************************************************/
+/******************* RECUPERATION DES DONNEES DE L'API *******************/
+/***********************************************************************/
+
 fetch(`http://localhost:3000/api/products/${id}`) // fetch fonction de chrome pour recuperer les données de l'api
   .then((response) => response.json())
   .then((res) => handleData(res)); // recherche de la fonction handleData
+
+/**************************************************************/
+/******************* CREATION DE L'ARTICLES ******************/
+/************************************************************/
 
 function handleData(kanap) {
   // recuperation de l'object ainsi que ces valeurs
@@ -28,10 +36,10 @@ function handleData(kanap) {
 
 function makeImage(imageUrl, altTxt) {
   // creation de la balise "image"
-  const image = document.createElement("img"); // creation de la balise "img"
+  const image = document.createElement("img"); 
   image.src = imageUrl; // pour dire que la source de l'image est egale à imageUrl de l'api
   image.alt = altTxt; // pour dire que la description de l'image est egale à altTxt de l'api
-  const parent = document.querySelector(".item__img"); // selection de la destination en l'occurence la div avec pour class .item__img
+  const parent = document.querySelector(".item__img"); // selection de la destination en l'occurence la div avec la class .item__img
   if (parent != null) parent.appendChild(image); // si parent est different de null alors on ajoute image
 }
 
@@ -74,6 +82,10 @@ if (button != null) {
   button.addEventListener("click", handleClick); // ajout de l'evenement au clique
 }
 
+/**************************************************************/
+/****************** SAUVEGARDE DE L'ARTICLES *****************/
+/************************************************************/
+
 function handleClick() {
   // récuperation des valeurs de couleur et de la quantité
   const color = document.querySelector("#colors").value; // recherche de la valeur de la couleur
@@ -81,6 +93,8 @@ function handleClick() {
   if (itemOrderInvalid(color, quantity)) return;
   saveOrder(color, quantity);
 }
+
+
 
 function saveOrder(color, quantity) {
   // sauvegarde des order dans le localStorage
@@ -130,6 +144,10 @@ function addCart(product, quantity) {
   }
   saveCart(basket);
 }
+
+/**************************************************************/
+/*************************** ALERTE **************************/
+/************************************************************/
 
 function itemOrderInvalid(color, quantity) {
   // message d'alert si la couleur est nul ou egale à la string par defaut "", si la quantité est nul ou egale à 0

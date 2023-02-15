@@ -2,6 +2,7 @@ searchArticleFromCache(); // appel de la fonction
 
 const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => submitForm(e));
+
 /*altTxt: "Photo d'un canapé bleu, deux places";
 color: "White";
 id: "107fb5b75607497b96722bda5b504926";
@@ -9,6 +10,10 @@ imageUrl: "http://localhost:3000/images/kanap01.jpeg";
 name: "Kanap Sinopé";
 price: 1849;
 quantity: 1;*/
+
+/**************************************************************/
+/******************** RECHERCHE DANS LE LC *******************/
+/************************************************************/
 
 function searchArticleFromCache() {
   // function qui nous permettre de créer l'article en recherchant les valeurs des produit dans LC "basket"
@@ -38,6 +43,10 @@ function displayItem(valeur) {
   displayTotalPrice();
 }
 
+/**************************************************************/
+/*************** CALCULE TOTAL QUANTITY + PRIX ***************/
+/************************************************************/
+
 function displayTotalPrice() {
   // function qui va venir calculer le prix total par rapport aux prix et la quantité des produits dans le LC
   const totalPrice = document.querySelector("#totalPrice");
@@ -49,6 +58,10 @@ function displayTotalPrice() {
   totalPrice.textContent = total;
   return total;
 }
+
+/**************************************************************/
+/******************* CREATION DES ARTICLES *******************/
+/************************************************************/
 
 function displayTotalQuantity() {
   // function qui va calculer la quantité total par rapport aux quantité des produits dans le LC
