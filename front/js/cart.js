@@ -262,7 +262,7 @@ function submitForm(e) {
     isFormCityInvalid() &&
     isFormEmailInvalid()
   ) {
-    fetch("http://localhost:3000/api/products/order", {
+    fetch(/*"http://localhost:3000/api/products/order"*/"https://kanapi.gtnsimon.dev/api/products/order", {
       method: "POST",
       body: JSON.stringify(body),
       headers: {

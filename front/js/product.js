@@ -11,7 +11,7 @@ if (id != null) {
 /******************* RECUPERATION DES DONNEES DE L'API *******************/
 /***********************************************************************/
 
-fetch(`http://localhost:3000/api/products/${id}`) // fetch fonction de chrome pour recuperer les données de l'api
+fetch(/*`http://localhost:3000/api/products/${id}`*/`https://kanapi.gtnsimon.dev/api/products/${id}`) // fetch fonction de chrome pour recuperer les données de l'api
   .then((response) => response.json())
   .then((res) => handleData(res)); // recherche de la fonction handleData
 

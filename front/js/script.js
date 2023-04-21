@@ -2,7 +2,7 @@
 /******************* RECUPERATION DES DONNEES DE L'API *******************/
 /***********************************************************************/
 
-fetch("http://localhost:3000/api/products") // fetch fonction de chrome pour recuperer les données de l'api
+fetch(/*"http://localhost:3000/api/products"*/"https://kanapi.gtnsimon.dev/api/products") // fetch fonction de chrome pour recuperer les données de l'api
   .then((res) => res.json())
   .then((data) => addProducts(data)); // recherche de la fonction addProducts
 
